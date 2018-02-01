@@ -76,18 +76,20 @@ void dfs(Position pos, queue<Position> que, double len) {
 		}
 	}
     int tx, ty, k;
-    if(x == N && y == M) return;
+    if(x == S.x && y == S.y) {
+      if(que.size() == people) {
+          route.push(make_route(que, (int)len));
+      }
+      return;
+    }
     for(k = 0; k < 4; k++) {
         tx = x + nextstep[k][0];
         ty = y + nextstep[k][1];
-        if (tx >= 0 && tx < N && ty >= 0 && ty < M && record[tx][ty] == 0) {
+        if (tx >= 0 && tx < N && ty >= 0 && ty < M && (record[tx][ty] == 0 || (tx == S.x && ty == S.y))) {
             record[tx][ty] = true;
             dfs(make_pos(tx, ty), que, len);
             record[tx][ty] = false;
         }
-    }
-    if(que.size() == people) {
-        route.push(make_route(que, (int)len));
     }
 }
 int main() {
