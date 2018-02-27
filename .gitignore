@@ -5,6 +5,7 @@
 *.in
 *.out
 *.ans
+compiling_error.txt
 
 # ---> C++
 # Compiled Object files
@@ -212,7 +213,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
+# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -319,4 +320,3 @@ $RECYCLE.BIN/
 # Local configuration folder and symbol database
 /.anjuta/
 /.anjuta_sym_db.db
-
