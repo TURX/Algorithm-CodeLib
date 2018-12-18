@@ -1,33 +1,41 @@
 #include <iostream>
 using namespace std;
-template T;
-int n, to[200003];
 
-struct unionFindSet {
-  int ufset[200003];
-  inline void init(const T& n) {
-    for(int t = 0; t < (int)n; t++) ufset[t] = t;
-  }
-  /*
-  inline T find(const T& n) {
-    int c = (int)n, t;
-    // while(ufset[c] != c) c = ufset[c];
-    while((int)n != c) {
-      t = ufset[(int)n];
-      ufset[(int)n] = c;
-      n = t;
+#define MAXN 200003
+
+int N, tmp, minDis = 0x7FFFFFFF;
+
+struct UFSET {
+    int fa[MAXN], d[MAXN];
+    inline void init(int n) {
+        while(n--) fa[n] = n;
     }
-    return n;
-  }
-  */
- 
-} ufset;
+    inline int find(int n) {
+        if(fa[n] == n) return n;
+        int last = fa[n];
+        fa[n] = find(fa[n]);
+        d[n] += d[last];
+        return fa[n];
+    }
+    inline void merge(int a, int b) {
+        int x = find(a), y = find(b);
+        if(x != y) {
+            fa[x] = y;
+            d[a] = d[b] + 1;
+        } else {
+            minDis = min(minDis, d[a] + d[b] + 1);
+        }
+    }
+} U;
 
 int main() {
-  ios::sync_with_stdio(false);
-  cin >> n;
-  for(int t = 0; t < n; t++) {
-    cin >> to[t];
-  }
-  return 0;
+    ios::sync_with_stdio(false);
+    cin >> N;
+    U.init(N);
+    for(int t = 1; t <= N; t++) {
+        cin >> tmp;
+        U.merge(t, tmp);
+    }
+    cout << minDis << endl;
+    return 0;
 }

@@ -16,7 +16,7 @@ struct ufset{
         while(x != ufset[x]) x = ufset[x];
         return x;
     }
-} S;
+} S; // Define a classic union-find set.
 
 inline bool cmp(Edge& l, Edge& r) {
     return l.w < r.w;
@@ -24,18 +24,18 @@ inline bool cmp(Edge& l, Edge& r) {
 
 int main() {
     ios::sync_with_stdio(false);
-    cin >> N >> M;
-    S.init(N);
+    cin >> N >> M; // Let N represents the number of nodes, M represents the number of edges.
+    S.init(N); // Initialize N union-find set.
     for(int t = 0; t < M; t++) {
         cin >> E[t].u >> E[t].v >> E[t].w;
-    }
-    sort(E, E + M, cmp);
+    } // Input all M edges.
+    sort(E, E + M, cmp); // Sort by weight.
     for(int t = 0; t < M; t++) {
-        int eu = S.find(E[t].u);
-        int ev = S.find(E[t].v);
-        if(eu == ev) continue; // Loop
-        total += E[t].w;
-        S.ufset[ev] = eu; cnt++;
+        int eu = S.find(E[t].u); // Find where the E[t] originally comes from.
+        int ev = S.find(E[t].v); // Find where the E[t] finally goes to.
+        if(eu == ev) continue; // E[t].u == E[t].v: Loop, cannot calculate.
+        total += E[t].w; // Add current weight to the total weight.
+        S.ufset[ev] = eu; cnt++; // Update S.ufset(S.find(E[t].v)) to S.find(E[t].u), add 1 to cnt.
         if(cnt == N - 1) break;
     }
     cout << total << endl;

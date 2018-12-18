@@ -1,30 +1,58 @@
 #include <iostream>
-#include <memory.h>
+#include <cstring>
+#include <queue>
+#include <vector>
 using namespace std;
-// Dijkstra http://www.cnblogs.com/biyeymyhjob/archive/2012/07/31/2615833.html
-int n,m,s,map[10000][10000];
-inline void ins(int fi,int gi,int wi) { // Insertion
-	int posx=0,posy=0;
-	bool flag=false;
-	for(;posy<10000;posy++) {
-		for(;posx<10000;posx++) {
-			if(!map[posx][posy]) {
-				flag=true;
-				break;
+
+#define MAXN 10003
+
+
+int N, M, S;
+unsigned long long x, y, w;
+struct Edge {
+	int to;
+    unsigned long long weight;
+	inline friend bool operator <(const Edge& lhs, const Edge& rhs) {
+		return lhs.weight < rhs.weight;
+	}
+};
+vector<Edge> G[MAXN];
+unsigned long long dis[MAXN];
+bool vis[MAXN];
+// N: Total number of points
+
+void Dijkstra() {
+	priority_queue<Edge> pq;
+	pq.push({S, 0});
+	dis[S] = 0;
+	while(!pq.empty()) {
+		Edge current = pq.top();
+		pq.pop();
+        int u = current.to;
+        unsigned long long d = current.weight;
+		if(vis[current.to]) continue;
+		vis[current.to] = true;
+		for(int t = 0; t < G[current.to].size(); t++) {
+			if(dis[G[current.to][t].to] > dis[current.to] + G[current.to][t].weight) {
+				dis[G[current.to][t].to] = dis[current.to] + G[current.to][t].weight;
+				pq.push({G[current.to][t].to, dis[G[current.to][t].to]});
 			}
-		}
-		if(flag==true) {
-			break;
 		}
 	}
 }
+
 int main() {
 	ios::sync_with_stdio(false);
-	memset(map,0,sizeof(map));
-	cin>>n>>m>>s;
-	for(int t=0;t<m;t++) {
-		int fi,gi,wi;
-		cin>>fi>>gi>>wi;
-		ins(fi,gi,wi);
+	cin >> N >> M >> S;
+	for(int t = 1; t <= M; t++) {
+		cin >> x >> y >> w;
+		G[x].push_back({y, w});
 	}
+	memset(dis, 500003, sizeof(dis));
+	Dijkstra();
+	for(int t = 1; t <= N; t++) {
+		cout << dis[t] << " ";
+	}
+	cout << endl;
+	return 0;
 }
