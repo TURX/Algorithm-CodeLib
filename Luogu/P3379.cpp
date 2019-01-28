@@ -1,60 +1,59 @@
-// https://www.luogu.org/blog/34188/solution-p3379
-
+// luogu-judger-enable-o2
 #include <iostream>
-#include <algorithm>
+#include <cstdio>
 using namespace std;
 
-struct Node {
-    int dest, next;
-} nodes[1000001];
-int N, M, S, nodeCnt, head[500001], depth[500001], fa[500001][23], lg[500001];
+struct E {
+    int v, next;
+} Edge[1000005];
+int head[500005], tot = 1, depth[500005], fa[500005][20];
 
-inline void add(int x, int y) {
-    nodes[++nodeCnt] = {y, head[x]};
-    head[x] = nodeCnt;
+void addEdge(int u, int v) {
+    Edge[tot].v = v;
+    Edge[tot].next = head[u];
+    head[u] = tot;
+    tot++;
+}
+
+void preProcess(int x = 1, int father = 0) {
+    depth[x] = depth[father] + 1;
+    fa[x][0] = father;
+    for(int i = 1; i <= 19 && fa[x][i - 1]; i++) fa[x][i] = fa[fa[x][i - 1]][i - 1];
+    for(int i = head[x]; i; i = Edge[i].next) {
+        if(Edge[i].v != father) {
+            preProcess(Edge[i].v, x);
+        }
+    }
 }
 
 inline int lca(int x, int y) {
     if(depth[x] < depth[y]) swap(x, y);
-    while(depth[x] > depth[y])
-        x = fa[x][lg[depth[x] - depth[y] - 1]];
+    int dis = depth[x] - depth[y];
+    for(int i = 19; i + 1; i--)
+        if(dis & (1 << i)) x = fa[x][i];
     if(x == y) return x;
-    for(int t = lg[depth[x]]; t >= 0; t--) {
-        if(fa[x][t] != fa[y][t]) {
-            x = fa[x][t];
-            y = fa[y][t];
+    for(int i = 19; i + 1; i--) {
+        if(fa[x][i] != fa[y][i]) {
+            x = fa[x][i];
+            y = fa[y][i];
         }
     }
+    if(x == y) return x;
     return fa[x][0];
 }
 
-inline void dfs(int current, int father) {
-    depth[current] = depth[father] + 1;
-    fa[current][0] = father;
-    for(int t = 1; (1 << t) <= depth[current]; t++)
-        fa[current][t] = fa[fa[current][t - 1]][t - 1];
-    for(int t = head[current]; t; t = nodes[t].next)
-        if(nodes[t].dest != father) dfs(nodes[t].dest, current);
-}
-
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin >> N >> M >> S;
-    for(int t = 0; t < N - 1; t++) {
-        int x, y;
-        cin >> x >> y;
-        add(x, y);
-        add(y, x);
-    }
-    dfs(S, 0); // Pre-procession
-    for(int t = 1; t <= N; t++) {
-        lg[t] = lg[t - 1] + (1 << lg[t - 1] == t);
-    }
-    for(int t = 1; t <= M; t++) {
-        int a, b;
+int main() {
+    int N, M, S, a, b;
+    scanf("%d %d %d", &N, &M, &S);
+    for(int i = 1; i < N; i++) {
         cin >> a >> b;
-        cout << lca(a, b) << endl;
+        addEdge(a, b);
+        addEdge(b, a);
+    }
+    preProcess(S, 0);
+    while(M--) {
+        scanf("%d %d", &a, &b);
+        printf("%d\n", lca(a, b));
     }
     return 0;
 }

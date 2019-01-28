@@ -1,10 +1,11 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
-#define MAXN 100001
+#define MAXN 2000000
 #define lson(x) x << 1
 #define rson(x) x << 1 | 1
-long long total[MAXN << 2], tag[MAXN << 2], input[MAXN];
+long long total[MAXN << 2], input[MAXN];
 
 inline void preProcess(const int& id, const int& l, const int& r) {
     if(l == r) total[id] = input[l]; // Build the bottom line of nodes (original value).
@@ -17,7 +18,7 @@ inline void preProcess(const int& id, const int& l, const int& r) {
 }
 
 long long enquiry(const int& id, const int& l, const int& r, const int& borderL, const int& borderR) {
-    if(l > borderR || r < borderL) return 0;
+    if(l > borderR || r < borderL) return 0x3f;
     if(l <= borderL && r >= borderR) return total[id];
     // Initial: borderL = 1, borderR = N, l = x, r = y;
     int mid = (borderL + borderR) >> 1;
@@ -29,14 +30,15 @@ inline int at(const int& n) {
 }
 
 int main() {
-    int N, M, x, y, op;
-    long long k;
+    int N, M;
     ios::sync_with_stdio(false);
+    memset(total, 0x3f, sizeof(total));
     cin >> N >> M;
     for(int t = 1; t <= N; t++) cin >> input[t];
     preProcess(1, 1, N);
+    cout << "0" << endl;
     for(int t = 1; t < N; t++) {
-        cout << enquiry(1, at(t - M), at(t), 1, N) << endl;
+        cout << enquiry(1, at(t - M + 1), at(t), 1, N) << endl;
     }
     return 0;
 }

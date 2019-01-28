@@ -1,10 +1,7 @@
 #define MAXL 1001
 #include <iostream>
-#include <memory.h>
 #include <string>
 using namespace std;
-
-bool visited[MAXL];
 
 struct Trie {
     int son[5];
@@ -17,6 +14,7 @@ struct TrieUtil {
     inline int insertChar(const char& ch, const int& father) {
         trieCounter++;
         T[trieCounter].val = ch - 'a';
+        T[trieCounter].counter++;
         T[father].son[ch - 'a'] = trieCounter;
         return trieCounter;
     }
@@ -30,27 +28,24 @@ struct TrieUtil {
                 current = T[current].son[str[t] - 'a'];
             }
         }
-        T[current].counter++;
     }
     inline int queryString(string& str, const int& start, int current) {
-        if(start == str.length() - 1)
         int ans = 0;
         for(int t = start; t < str.length(); t++) {
             if(str[t] != '?') {
                 if(T[current].son[str[t] - 'a']) {
                     current = T[current].son[str[t] - 'a'];
                 } else {
-                    if(!visited[current]) {
-                        ans += T[current].counter;
-                        visited[current] = true;
-                    }
+                    ans += T[current].counter;
                 }
             } else {
                 for(char ch = 'a'; ch <= 'e'; ch++) {
                     str[t] = ch;
                     ans += queryString(str, t, current);
                 }
-                ans += queryString(str, t + 1, current);
+                if(str[t + 1] != '?') {
+                    ans += queryString(str, t + 1, current);
+                }
             }
         }
         return ans;
@@ -69,7 +64,6 @@ int main() {
     }
     for(int t = 0; t < M; t++) {
         cin >> tmpStr;
-        memset(visited, 0, sizeof(visited));
         cout << U.queryString(tmpStr, 0, 0) << endl;
     }
     return 0;

@@ -1,40 +1,29 @@
 #include <iostream>
-#include <memory.h>
-#include <cmath>
+#include <cstring>
 using namespace std;
-int N,arr[108],f[108][108];
-void getMin();
-void getMax();
+
+#define MAXN 201
+
+int N, A[MAXN], DP[MAXN][MAXN], SUM[MAXN];
+
 int main() {
-	ios::sync_with_stdio(false);
-	cin>>N;
-	for(int t=1;t<=N;t++) {
-		cin>>arr[t];
-		arr[t]+=arr[t-1];
-	}
-	getMin();
-	getMax();
-}
-void getMin() {
-	memset(f,127/3,sizeof(f));
-	for(int i=1;i<=N;i++) f[i][i]=0;
-	for(int i=N-1;i>=1;i--) {
-		for(int j=i+1;j<=N;j++) {
-			for(int k=i;k<j;k++) {
-				f[i][j]=min(f[i][j],f[i][k]+f[k+1][j]+arr[j]-arr[i-1]);
-			}
-		}
-	}
-	cout<<f[1][N]<<endl;
-}
-void getMax() {
-	memset(f,0,sizeof(f));
-	for(int i=N-1;i>=1;i--) {
-		for(int j=i+1;j<=N;j++) {
-			for(int k=i;k<j;k++) {
-				f[i][j]=max(f[i][j],f[i][k]+f[k+1][j]+arr[j]-arr[i-1]);
-			}
-		}
-	}
-	cout<<f[1][N]<<endl;
+    ios::sync_with_stdio(false);
+    cin >> N;
+    for(int t = 1; t <= N; t++) cin >> A[t];
+    memset(DP, 0x3f, sizeof(DP)); // Set INF
+    for(int t = 1; t < N; t++) {
+        DP[t][t] = 0;
+        SUM[t] = SUM[t - 1] + A[t];
+    }
+    for(int len = 2; len <= N; len++) {
+        for(int l = 1; l <= N - len + 1; l++) {
+            int r = l + len - 1;
+            for(int k = l; k < r; k++) {
+                DP[l][r] = min(DP[l][r], DP[l][k] + DP[k + 1][r]);
+            }
+            DP[l][r] += SUM[r] - SUM[l - 1];
+        }
+    }
+    cout << DP[1][N] << endl;
+    return 0;
 }
