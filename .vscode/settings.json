@@ -1,0 +1,13 @@
+{
+	"files.associations": {
+		"*.tcc": "cpp",
+		"forward_list": "cpp",
+		"list": "cpp",
+		"slist": "cpp",
+		"regex": "cpp",
+		"ratio": "cpp",
+		"ostream": "cpp"
+	},
+	"C_Cpp.default.cppStandard": "c++11",
+	"C_Cpp.default.cStandard": "c11"
+}

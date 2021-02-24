@@ -32,14 +32,14 @@ void Build() { // 建立平衡树
 }
 
 int GetRankByVal(int p, int val) { // 题中查询k数的排名
-    if(p == 0) return 0; // 0无法排名
+    if(p == 0) return 0; // 0代表没有子树，因为传的值是儿子，可以看下面的调用
     if(val == a[p].val) return a[a[p].l].size + 1; // 如果当前节点值是查询值的话，就可以直接返回，即查询节点排名=当前节点排名=左子树大小+当前节点
     if(val < a[p].val) return GetRankByVal(a[p].l, val); // 如果当前节点值比查询值大，即查询节点在当前节点的左子树中，所以递归进入左子树查找
     return GetRankByVal(a[p].r, val) + a[a[p].l].size + a[p].cnt; // 相当于else，即查询节点在当前节点的右子树中，所以递归进入右子树查找；但是右子树只能查找出右边的部分值，所以还要加上一些，即查询节点排名=左子树大小+当前节点的副本数+递归查找右子树的结果
 }
 
 int GetValByRank(int p, int rank) { // 题中查询排名为x的数
-    if(p == 0) return INF; // 0无法排名
+    if(p == 0) return INF; // 0代表没有子树，因为传的值是儿子，可以看下面的调用
     if(a[a[p].l].size >= rank) return GetValByRank(a[p].l, rank); // 如果当前节点子树大小比查询值大或等于查询值，即当前节点排名一定大于或等于查询值，所以递归进入左子树查找
     if(a[a[p].l].size + a[p].cnt >= rank) return a[p].val; // 如果当前节点子树大小+当前节点的副本数，即当前节点的局部排名，如果大于或等于查询值，即被查询到，就返回值
     return GetValByRank(a[p].r, rank - a[a[p].l].size - a[p].cnt); // 相当于else，即查询节点不存在在当前节点和当前节点的左子树中，而且因为在右子树中查询节点的排名和总排名会相差当前节点的排名，即左子树的大小+当前节点的副本数，所以此时在右子树中使用局部排名递归查询并返回查询值

@@ -1,3 +1,3 @@
-# TURX
+# TURX/Algorithm-CodeLib
 
-TURX's Codes of OI
+TURX's Code Archive of Algorithms and Data Structures in Competitive Programming

@@ -1,7 +1,12 @@
-#include <iostream>
+#include <cstdio>
 using namespace std;
 
+int n, h[100001], dp[100001];
+
 int main() {
-    ios::sync_with_stdio(false);
+    while(~scanf("%d", &h[n++]));
+    for (int t = 0; t < n; t++) {
+        dp[]
+    }
     return 0;
 }

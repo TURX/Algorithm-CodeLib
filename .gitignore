@@ -1,6 +1,7 @@
 # Sundry
-.vs/
-.vscode/
+.dSYM
+._*
+*.old
 [Ss]ecret/
 *.in
 *.out
