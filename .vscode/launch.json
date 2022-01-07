@@ -2,20 +2,27 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-            "type": "lldb",
-            "request": "launch",
-            "name": "lldb",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
-            "args": [],
-            "cwd": "${fileDirname}",
-            "preLaunchTask": "clang_build"
-        },
+			"type": "lldb",
+			"request": "launch",
+			"name": "lldb",
+			"program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+			"args": [],
+			"cwd": "${fileDirname}",
+			"preLaunchTask": "clang_build"
+		},
+		{
+			"name": "python",
+			"type": "python",
+			"request": "launch",
+			"program": "${file}",
+			"console": "integratedTerminal"
+		},
 		{
 			"name": "g++",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${fileDirname}/${fileBasenameNoExtension}",
-			"args": [],
+			"args": ["-g"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
@@ -30,6 +37,12 @@
 			],
 			"preLaunchTask": "g++ build active file",
 			"miDebuggerPath": "/usr/bin/gdb"
+		},
+		{
+			"type": "java",
+			"name": "Java Launch Current File",
+			"request": "launch",
+			"mainClass": "${file}"
 		}
 	]
 }

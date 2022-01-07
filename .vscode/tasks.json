@@ -4,7 +4,7 @@
 		{
 			"type": "shell",
 			"label": "g++ build active file",
-			"command": "/usr/bin/g++",
+			"command": "/opt/homebrew/bin/g++-11",
 			"args": [
 				"-g",
 				"${file}",
@@ -24,12 +24,13 @@
             "type": "shell",
             "command": "clang++",
             "args": [
-                "-std=c++11",
+                "-std=c++17",
                 "-stdlib=libc++",
                 "${fileDirname}/${fileBasenameNoExtension}.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.exe",
-                "--debug"
+                "--debug",
+				"-DVSCODE_DBG=1"
             ],
             "group": {
                 "kind": "build",
