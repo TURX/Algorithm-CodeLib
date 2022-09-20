@@ -78,7 +78,21 @@
 		"stdexcept": "cpp",
 		"streambuf": "cpp",
 		"system_error": "cpp",
-		"numeric": "cpp"
+		"numeric": "cpp",
+		"cfenv": "cpp",
+		"cinttypes": "cpp",
+		"condition_variable": "cpp",
+		"csetjmp": "cpp",
+		"csignal": "cpp",
+		"fstream": "cpp",
+		"future": "cpp",
+		"iomanip": "cpp",
+		"random": "cpp",
+		"scoped_allocator": "cpp",
+		"thread": "cpp",
+		"typeindex": "cpp",
+		"valarray": "cpp",
+		"filesystem": "cpp"
 	},
 	"C_Cpp.default.cppStandard": "c++17",
 	"C_Cpp.default.cStandard": "c17"

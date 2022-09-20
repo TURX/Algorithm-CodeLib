@@ -1,42 +1,45 @@
-/*
-1 7
-1 2(5)
-
-1 5 4
-1 2(3) (N)
-
-sort
-
-*/
-
 #include <iostream>
+#include <set>
+#include <vector>
 #include <algorithm>
-#include <unordered_map>
+#include <cmath>
 using namespace std;
 
-// <=n | >n
+set<int> P;
+vector<int> W;
+int T, N, tmp, ans;
 
 int main() {
+	#ifdef VSCODE_DBG
+		freopen("test.in", "r", stdin);
+	#endif
 	cin.tie(0)->sync_with_stdio(0);
-	cin.exceptions(cin.failbit);
-	int T;
 	cin >> T;
 	while (T--) {
-		int N;
+		ans = 0;
 		cin >> N;
-		int A[N];
-		for (int i = 0; i < N; i++) cin >> A[i];
-		sort(A, A + N);
-		unordered_map<int, bool> S;
+		P.clear();
+		W.clear();
+		for (int i = 1; i <= N; i++) P.insert(i);
 		for (int i = 0; i < N; i++) {
-			if (A[i] <= N) {
-				if (!S[A[i]]) S[A[i]] = true;
-				else {
-					// repeated
-				}
-			} else {
-				// exceeds allowance
+			cin >> tmp;
+			if (tmp <= N) {
+				if (!P.count(tmp)) W.push_back(tmp);
+				else P.erase(tmp);
 			}
+			else W.push_back(tmp);
 		}
+		sort(W.begin(), W.end());
+		// now we have a set P of numbers that the permutation set currently lacks
+		// and a set W of exceeded numbers that should not be in the permutation set
+		for (vector<int>::iterator it = W.begin(); it != W.end(); it++) {
+			if (*P.begin() >= ceil(*it / 2.0)) {
+				ans = -1;
+				break;
+			}
+			P.erase(P.begin());
+			ans++;
+		}
+		cout << ans << endl;
 	}
 }
